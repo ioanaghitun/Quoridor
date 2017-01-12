@@ -1,6 +1,5 @@
 #include<SDL.h>
 #include<SDL_image.h>
-#include<SDL_ttf.h>
 
 #include<iostream>
 using namespace std;
@@ -175,7 +174,6 @@ int main(int argc, char* argv[])
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
-	TTF_Init();
 
 	SDL_Window *_window = nullptr;
 	SDL_Renderer *_renderer = nullptr;
@@ -196,7 +194,6 @@ int main(int argc, char* argv[])
 	_window = nullptr;
 	_renderer = nullptr;
 
-	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 
