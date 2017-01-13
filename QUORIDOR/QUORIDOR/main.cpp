@@ -1242,7 +1242,7 @@ void StartJoc()
 			if (valoare == 0)
 				mergeProgramul = false;
 			
-			if (jucator1Y == 78)
+			if (jucator1.linie == 0)
 			{
 				bool merge = true;
 				while (merge)
@@ -1261,7 +1261,7 @@ void StartJoc()
 				}
 			}
 
-			if (jucator2Y == 573)
+			if (jucator2.linie == 16)
 			{
 				bool merge = true;
 				while (merge)
