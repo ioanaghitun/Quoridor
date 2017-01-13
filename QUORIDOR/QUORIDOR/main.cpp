@@ -99,19 +99,6 @@ bool LiberPereteOrizontal(int linie, int coloana)
 	return true;
 }
 
-bool EstePereteVerticalLiber(int x, int y)
-{
-	bool drumJucator1, drumJucator2;
-	matriceAuxiliara(x, y, 1);
-	drumJucator1 = ExistaDrum(1);
-	matriceAuxiliara(x, y, 1);
-	drumJucator2 = ExistaDrum(2);
-
-	if (drumJucator1 == true && drumJucator2 == true)
-		return true;
-	return false;
-}
-
 bool EstePereteOrizontalLiber(int x, int y)
 {
 	bool drumJucator1, drumJucator2;
@@ -125,6 +112,126 @@ bool EstePereteOrizontalLiber(int x, int y)
 	return false;
 }
 
+bool ExistaDrum(int jucator)
+{
+	int direcLinii[] = { 1, -1, 0, 0 };
+	int direcColoana[] = { 0, 0, 1, -1 };
+	int urmLinie[] = { 2, -2, 0, 0 };
+	int urmColoana[] = { 0, 0, 2, -2 };
+	int i;
+	int lungime = 1;
+	bool drum = false;
+	pozitie coada[100];
+	if (jucator == 1)
+	{
+		coada[1].linie = jucator1.linie;
+		coada[1].coloana = jucator1.coloana;
+	}
+	if (jucator == 2)
+	{
+		{
+			coada[1].linie = jucator2.linie;
+			coada[1].coloana = jucator2.coloana;
+		}
+	}
+	while (lungime != 0)
+	{
+		if (coada[lungime].linie == 0 && jucator == 1)
+			return true;
+		if (coada[lungime].linie == 16 && jucator == 2)
+			return true;
+		matriceAuxiliara[coada[lungime].linie][coada[lungime].coloana] = 3;
+		drum = false;
+		for (i = 0; i <= 3; i++)
+			if (matriceAuxiliara[coada[lungime].linie + direcLinii[i]][coada[lungime].coloana + direcColoana[i]] != -1 && matriceAuxiliara[coada[lungime].linie + urmLinie[i]][coada[lungime].coloana + urmColoana[i]] != 3 && VerificaDepasireMatrice(coada[lungime].linie + urmLinie[i], coada[lungime].coloana + urmColoana[i]) == true)
+			{
+				lungime++;
+				coada[lungime].linie = coada[lungime - 1].linie + urmLinie[i];
+				coada[lungime].coloana = coada[lungime - 1].coloana + urmColoana[i];
+				i = 4;
+				drum = true;
+			}
+		if (drum == false)
+			lungime--;
+	}
+	return false;
+}
+
+bool EstePereteVerticalLiber(int x, int y)
+{
+	bool drumJucator1, drumJucator2;
+
+	int k, t;
+	for (k = 0; k <= 16; k++)
+		for (t = 0; t <= 16; t++)
+			matriceAuxiliara[k][t] = matriceJoc[k][t];
+
+		matriceAuxiliara[x][y * 2 + 1] = -1;
+		matriceAuxiliara[x + 1][y * 2 + 1] = -1;
+		matriceAuxiliara[x + 2][y * 2 + 1] = -1;
+
+	drumJucator1 = ExistaDrum(1);
+
+	matriceAuxiliara[x][y * 2 + 1] = -1;
+	matriceAuxiliara[x + 1][y * 2 + 1] = -1;
+	matriceAuxiliara[x + 2][y * 2 + 1] = -1;
+
+	drumJucator2 = ExistaDrum(2);
+
+	if (drumJucator1 == true && drumJucator2 == true)
+		return true;
+	return false;
+}
+void VerificaLocPerete(SDL_Event ev, bool &gata)
+{
+	int i, j;
+	for (i = 0; i <= 15; i++)
+	{
+		for (j = 0; j <= 7; j++)
+		{
+			if (i % 2 == 0)
+			{
+				if (MousePereteVertical(ev, matricePerete[i][j].x, matricePerete[i][j].y) && LiberPereteVertical(i, j) && VerificaPereti() && EstePereteVerticalLiber(i, j) == 1)
+				{
+					if (ev.type == SDL_MOUSEBUTTONDOWN && matricePerete[i][j].fixat == 0)
+					{
+						if (incepeJucator1)
+							peretiJucator1--;
+						else
+							peretiJucator2--;
+
+						matriceJoc[i][j * 2 + 1] = -1;
+						matriceJoc[i + 1][j * 2 + 1] = -1;
+						matriceJoc[i + 2][j * 2 + 1] = -1;
+
+						matricePerete[i][j].fixat = 1;
+						gata = true;
+					}
+				}
+			}
+			else
+			{
+				if (MousePereteOrizontal(ev, matricePerete[i][j].x, matricePerete[i][j].y) && LiberPereteOrizontal(i, j) && VerificaPereti() && EstePereteOrizontalLiber(i, j) == 1)
+				{
+					if (ev.type == SDL_MOUSEBUTTONDOWN && matricePerete[i][j].fixat == 0)
+					{
+						if (incepeJucator1)
+							peretiJucator1--;
+						else
+							peretiJucator2--;
+
+						matriceJoc[i][j * 2] = -1;
+						matriceJoc[i][j * 2 + 1] = -1;
+						matriceJoc[i][j * 2 + 2] = -1;
+
+						matricePerete[i][j].fixat = 1;
+						gata = true;
+					}
+				}
+			}
+		}
+	}
+}
 int VerificaPozitieAdversar(int xUrm, int yUrm, int xAdversar, int yAdversar)
 {
 	if (xUrm == xAdversar && yUrm == yAdversar)
