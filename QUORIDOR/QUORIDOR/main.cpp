@@ -26,7 +26,44 @@ struct patratTablaJoc {
 };
 
 patratTablaJoc matricePatrate[9][9];
+pion jucator1, jucator2;
+short matriceJoc[17][17];
+short matriceAux[17][17];
 
+void MatriceAuxiliara(int x, int y, int pozitie)
+{
+    int i, j;
+	for (i = 0; i < 17; i++)
+		for (j = 0; j < 17; j++)
+			matriceAux[i][j] = matriceJoc[i][j];
+	if (pozitie == 1)
+	{
+		matriceAux[x][y * 2 + 1] = -1;
+		matriceAux[x + 1][y * 2 + 1] = -1;
+		matriceAux[x + 2][y * 2 + 1] = -1;
+	}
+	else
+	{
+		matriceAux[x][y * 2] = -1;
+		matriceAux[x][y * 2 + 1] = -1;
+		matriceAux[x][y * 2 + 2] = -1;
+
+	}
+
+}
+
+bool MousePereteVertical(SDL_Event event, int x, int y)
+{
+	if (event.motion.x >= x && event.motion.x <= x + 18 && event.motion.y >= y && event.motion.y <= y + 43)
+		return true;
+	return false;
+}
+bool MousePereteOrizontal(SDL_Event event, int x, int y)
+{
+	if (event.motion.x >= x && event.motion.x <= x + 40 && event.motion.y >= y && event.motion.y <= y + 15)
+		return true;
+	return false;
+}
 void IncarcaImagine(const char *filePath, SDL_Renderer *_renderer, int x, int y, int w, int h)
 {
 	SDL_Surface *_suprafata = nullptr;
