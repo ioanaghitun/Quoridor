@@ -1,8 +1,18 @@
 #include<SDL.h>
 #include<SDL_image.h>
-
+#include<SDL_ttf.h>
 #include<iostream>
 using namespace std;
+
+#define pozitieStart1X 481
+#define pozitieStart1Y 573
+#define pozitieStart2X 481
+#define pozitieStart2Y 78
+
+unsigned int jucator1X = 481;
+unsigned int jucator2X = 481;
+unsigned int jucator1Y = 573;
+unsigned int jucator2Y = 78;
 
 struct pion {
 	int linie;
@@ -26,10 +36,10 @@ struct patratTablaJoc {
 };
 
 patratTablaJoc matricePatrate[9][9];
-pion jucator1, jucator2;
+int matriceJoc[17][17];
+int matriceAux[17][17];
 perete matricePerete[16][8];
-short matriceJoc[17][17];
-short matriceAux[17][17];
+pion jucator1, jucator2;
 
 void MatriceAuxiliara(int x, int y, int pozitie)
 {
@@ -309,7 +319,8 @@ int main(int argc, char* argv[])
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
-
+	TTF_Init();
+	
 	SDL_Window *_window = nullptr;
 	SDL_Renderer *_renderer = nullptr;
 
@@ -329,6 +340,7 @@ int main(int argc, char* argv[])
 	_window = nullptr;
 	_renderer = nullptr;
 
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 
