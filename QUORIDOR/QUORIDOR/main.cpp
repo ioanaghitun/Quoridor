@@ -204,6 +204,639 @@ void InitializareTablaJoc()
 	}
 }
 
+int MutaJucator()
+{
+	int colorat = 0;
+	int pereteColorat = 0;
+	bool gata = false;
+	SDL_Event ev;
+
+	if (incepeJucator1 == true)
+	{
+		while (!gata)
+		{
+			while (SDL_PollEvent(&ev))
+			{
+				if (ev.type == SDL_QUIT)
+				{
+					gata = true;
+					return 0;
+				}
+
+				pereteColorat = 0;
+
+				if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x >= jucator1X && ev.motion.x <= jucator1X + 44 && ev.motion.y >= jucator1Y && ev.motion.y <= jucator1Y + 44)
+				{
+					if (colorat == 0)
+					{
+						RedaImagineJoc();
+						ColoreazaMutariPosibile(jucator1X, jucator1Y, jucator1, 1);
+						colorat = 1;
+					}
+					else
+					{
+						RedaImagineJoc();
+						colorat = 0;
+					}
+				}
+
+				if (colorat == 0)
+				{
+					ColoreazaPereti(ev, pereteColorat);
+					VerificaLocPerete(ev, gata);
+					if (gata)
+					{
+						incepeJucator1 = false;
+						return 1;
+					}
+				}
+
+				if (pereteColorat == 0 && colorat == 0)
+					RedaImagineJoc();
+
+				if (colorat == 1)
+				{
+
+					if (VerificaPozitieAdversar(jucator1X - 61, jucator1Y, jucator2X, jucator2Y) == 0 && jucator2X - 2 * 61 >= pozitieStart1X - (4 * 61) && matriceJoc[jucator1.linie][jucator1.coloana - 1] != -1)
+					{
+						if (matriceJoc[jucator1.linie][jucator1.coloana - 3] == -1)
+						{
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X - 61 && ev.motion.x < jucator1X - 61 + 44 && ev.motion.y > jucator1Y - 61 && ev.motion.y < jucator1Y + 44 - 61 && matriceJoc[jucator2.linie - 1][jucator2.coloana] != -1)
+							{
+								jucator1X -= 61;
+								jucator1Y -= 61;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.coloana -= 2;
+								jucator1.linie -= 2;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+								incepeJucator1 = false;
+								return 1;
+							}
+
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X - 61 && ev.motion.x < jucator1X - 61 + 44 && ev.motion.y > jucator1Y + 61 && ev.motion.y < jucator1Y + 44 + 61 && matriceJoc[jucator2.linie + 1][jucator2.coloana] != -1)
+							{
+								jucator1X -= 61;
+								jucator1Y += 61;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.coloana -= 2;
+								jucator1.linie += 2;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+								incepeJucator1 = false;
+								return 1;
+							}
+						}
+
+						if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X - 2 * 61 && ev.motion.x < jucator1X - 2 * 61 + 44 && ev.motion.y > jucator1Y && ev.motion.y < jucator1Y + 44 && matriceJoc[jucator1.linie][jucator1.coloana - 3] != -1)
+						{
+							jucator1X -= 2 * 61;
+							gata = true;
+
+							matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+							jucator1.coloana -= 4;
+							matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+						}
+					}
+					else
+						if (jucator1X - 61 >= pozitieStart1X - (4 * 61) && VerificaPozitieAdversar(jucator1X - 61, jucator1Y, jucator2X, jucator2Y) == 1 && matriceJoc[jucator1.linie][jucator1.coloana - 1] != -1)
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X - 61 && ev.motion.x < jucator1X - 61 + 44 && ev.motion.y > jucator1Y && ev.motion.y < jucator1Y + 44)
+							{
+								jucator1X -= 61;
+								gata = true;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.coloana -= 2;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+							}
+
+
+
+					if (VerificaPozitieAdversar(jucator1X + 61, jucator1Y, jucator2X, jucator2Y) == 0 && jucator1X + 2 * 61 <= pozitieStart1X + (4 * 61) && matriceJoc[jucator1.linie][jucator1.coloana + 1] != -1)
+					{
+						if (matriceJoc[jucator1.linie][jucator1.coloana + 3] == -1)
+						{
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X + 61 && ev.motion.x < jucator1X + 61 + 44 && ev.motion.y > jucator1Y + 61 && ev.motion.y < jucator1Y + 44 + 61 && matriceJoc[jucator2.linie + 1][jucator2.coloana] != -1)
+							{
+
+								jucator1X += 61;
+								jucator1Y +=  61;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.coloana += 2;
+								jucator1.linie += 2;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+								incepeJucator1 = false;
+								return 1;
+							}
+
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X + 61 && ev.motion.x < jucator1X + 61 + 44 && ev.motion.y > jucator1Y - 61 && ev.motion.y < jucator1Y + 44 - 61 && matriceJoc[jucator2.linie - 1][jucator2.coloana] != -1)
+							{
+
+								jucator1X += 61;
+								jucator1Y -= 61;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.coloana += 2;
+								jucator1.linie -= 2;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+								incepeJucator1 = false;
+								return 1;
+							}
+						}
+
+						if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X + 2 * 61 && ev.motion.x < jucator1X + 2 * 61 + 44 && ev.motion.y > jucator1Y && ev.motion.y < jucator1Y + 44 && matriceJoc[jucator1.linie][jucator1.coloana + 3] != -1)
+						{
+							jucator1X += 2 * 61;
+							gata = true;
+
+							matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+							jucator1.coloana += 4;
+							matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+						}
+					}
+					else
+						if (jucator1X + 61 <= pozitieStart1X + (4 * 61) && VerificaPozitieAdversar(jucator1X + 61, jucator1Y, jucator2X, jucator2Y) == 1 && matriceJoc[jucator1.linie][jucator1.coloana + 1] != -1)
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X + 61 && ev.motion.x < jucator1X + 61 + 44 && ev.motion.y > jucator1Y && ev.motion.y < jucator1Y + 44)
+							{
+								jucator1X += 61;
+								gata = true;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.coloana += 2;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+							}
+
+
+					if (jucator1Y + 61 <= pozitieStart1Y)
+						if (VerificaPozitieAdversar(jucator1X, jucator1Y + 61, jucator2X, jucator2Y) == 0 && jucator1Y + 2 * 61 <= pozitieStart1Y && matriceJoc[jucator1.linie + 1][jucator1.coloana] != -1)
+						{
+							if (matriceJoc[jucator1.linie + 3][jucator1.coloana] == -1)
+							{
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X - 61 && ev.motion.x < jucator1X - 61 + 44 && ev.motion.y > jucator1Y + 61 && ev.motion.y < jucator1Y + 44 + 61 && matriceJoc[jucator2.linie][jucator2.coloana - 1] != -1)
+								{
+									jucator1X -= 61;
+									jucator1Y +=  61;
+
+									matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+									jucator1.coloana -= 2;
+									jucator1.linie += 2;
+									matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+									incepeJucator1 = false;
+									return 1;
+								}
+
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X + 61 && ev.motion.x < jucator1X + 61 + 44 && ev.motion.y > jucator1Y + 61 && ev.motion.y < jucator1Y + 44 + 61 && matriceJoc[jucator2.linie][jucator2.coloana + 1] != -1)
+								{
+
+									jucator1X += 61;
+									jucator1Y += 61;
+
+									matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+									jucator1.coloana += 2;
+									jucator1.linie += 2;
+									matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+									incepeJucator1 = false;
+									return 1;
+								}
+							}
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X && ev.motion.x < jucator1X + 44 && ev.motion.y > jucator1Y + 2 * 61 && ev.motion.y < jucator1Y + 2 * 61 + 44 && matriceJoc[jucator1.linie + 3][jucator1.coloana] != -1)
+							{
+								jucator1Y += 2 * 61;
+								gata = true;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.linie += 4;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+							}
+						}
+						else
+							if (VerificaPozitieAdversar(jucator1X, jucator1Y + 61, jucator2X, jucator2Y) == 1 && matriceJoc[jucator1.linie + 1][jucator1.coloana] != -1)
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X && ev.motion.x < jucator1X + 44 && ev.motion.y > jucator1Y + 61 && ev.motion.y < jucator1Y + 61 + 44)
+								{
+									jucator1Y += 61;
+									gata = true;
+
+									matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+									jucator1.linie += 2;
+									matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+								}
+
+					if (jucator1Y - 61 >= pozitieStart2Y)
+					{
+						if (VerificaPozitieAdversar(jucator1X, jucator1Y - 61, jucator2X, jucator2Y) == 0 && jucator2.linie == 0 && matriceJoc[jucator1.linie - 1][jucator1.coloana] != -1)
+						{
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X - 61 && ev.motion.x < jucator1X - 61 + 44 && ev.motion.y > jucator1Y - 61 && ev.motion.y < jucator1Y + 44 - 61 && matriceJoc[jucator2.linie][jucator2.coloana - 1] != -1)
+							{
+
+								jucator1X -= 61;
+								jucator1Y -=  61;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.coloana -= 2;
+								jucator1.linie -= 2;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+								incepeJucator1 = false;
+								return 1;
+							}
+
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X + 61 && ev.motion.x < jucator1X + 61 + 44 && ev.motion.y > jucator1Y - 61 && ev.motion.y < jucator1Y + 44 - 61 && matriceJoc[jucator2.linie][jucator2.coloana + 1] != -1)
+							{
+								jucator1X += 61;
+								jucator1Y -= 61;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.coloana += 2;
+								jucator1.linie -= 2;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+								incepeJucator1 = false;
+								return 1;
+							}
+						}
+
+						if (VerificaPozitieAdversar(jucator1X, jucator1Y - 61, jucator2X, jucator2Y) == 0 && jucator1Y - 2 * 61 >= pozitieStart2Y && matriceJoc[jucator1.linie - 1][jucator1.coloana] != -1)
+						{
+							if (matriceJoc[jucator1.linie - 3][jucator1.coloana] == -1)
+							{
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X - 61 && ev.motion.x < jucator1X - 61 + 44 && ev.motion.y > jucator1Y - 61 && ev.motion.y < jucator1Y + 44 - 61 && matriceJoc[jucator2.linie][jucator2.coloana - 1] != -1)
+								{
+
+									jucator1X -= 61;
+									jucator1Y -= 61;
+
+									matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+									jucator1.coloana -= 2;
+									jucator1.linie -= 2;
+									matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+									incepeJucator1 = false;
+									return 1;
+								}
+
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X + 61 && ev.motion.x < jucator1X + 61 + 44 && ev.motion.y > jucator1Y - 61 && ev.motion.y < jucator1Y + 44 - 61 && matriceJoc[jucator2.linie][jucator2.coloana + 1] != -1)
+								{
+
+									jucator1X += 61;
+									jucator1Y -= 61;
+
+									matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+									jucator1.coloana += 2;
+									jucator1.linie -= 2;
+									matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+
+									incepeJucator1 = false;
+									return 1;
+								}
+							}
+
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X && ev.motion.x < jucator1X + 44 && ev.motion.y > jucator1Y - 2 * 61 && ev.motion.y < jucator1Y - 2 * 61 + 44 && matriceJoc[jucator1.linie - 3][jucator1.coloana] != -1) {
+								jucator1Y -= 2 * 61;
+								gata = true;
+
+								matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+								jucator1.linie -= 4;
+								matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+							}
+						}
+						else
+							if (VerificaPozitieAdversar(jucator1X, jucator1Y - 61, jucator2X, jucator2Y) == 1 && matriceJoc[jucator1.linie - 1][jucator1.coloana] != -1)
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator1X && ev.motion.x < jucator1X + 44 && ev.motion.y > jucator1Y - 61 && ev.motion.y < jucator1Y - 61 + 44)
+								{
+									jucator1Y -= 61;
+									gata = true;
+
+									matriceJoc[jucator1.linie][jucator1.coloana] = 0;
+									jucator1.linie -= 2;
+									matriceJoc[jucator1.linie][jucator1.coloana] = 1;
+								}
+					}
+				}
+			}
+		}
+		incepeJucator1 = false;
+	}
+
+	else
+	{
+		while (!gata)
+		{
+			while (SDL_PollEvent(&ev))
+			{
+				if (ev.type == SDL_QUIT)
+				{
+					gata = true;
+					return 0;
+				}
+
+				pereteColorat = 0;
+
+				if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x >= jucator2X && ev.motion.x <= jucator2X + 44 && ev.motion.y >= jucator2Y && ev.motion.y <= jucator2Y + 44)
+				{
+					if (colorat == 0)
+					{
+						ColoreazaMutariPosibile(jucator2X, jucator2Y, jucator2, 2);
+						colorat = 1;
+					}
+					else
+					{
+						RedaImagineJoc();
+						colorat = 0;
+					}
+				}
+
+				if (colorat == 0)
+				{
+					ColoreazaPereti(ev, pereteColorat);
+					VerificaLocPerete(ev, gata);
+
+					if (gata)
+					{
+						incepeJucator1 = true;
+						return 1;
+					}
+				}
+
+				if (pereteColorat == 0 && colorat == 0)
+					RedaImagineJoc();
+
+				if (colorat == 1)
+				{
+					if (VerificaPozitieAdversar(jucator2X - 61, jucator2Y, jucator1X, jucator1Y) == 0 && jucator2X - 2 * 61 >= pozitieStart1X - (4 * 61) && matriceJoc[jucator2.linie][jucator2.coloana - 1] != -1)
+					{
+						if (matriceJoc[jucator2.linie][jucator2.coloana - 3] == -1)
+						{
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X - 61 && ev.motion.x < jucator2X - 61 + 44 && ev.motion.y > jucator2Y - 61 && ev.motion.y < jucator2Y + 44 - 61 && matriceJoc[jucator1.linie - 1][jucator1.coloana] != -1)
+							{
+								jucator2X -= 61;
+								jucator2Y -= 61;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.coloana -= 2;
+								jucator2.linie -= 2;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+								incepeJucator1 = true;
+								return 1;
+							}
+
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X - 61 && ev.motion.x < jucator2X - 61 + 44 && ev.motion.y > jucator2Y + 61 && ev.motion.y < jucator2Y + 44 + 61 && matriceJoc[jucator1.linie + 1][jucator1.coloana] != -1)
+							{
+								jucator2X -= 61;
+								jucator2Y += 61;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.coloana -= 2;
+								jucator2.linie += 2;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+								incepeJucator1 = true;
+								return 1;
+							}
+						}
+
+						if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X - 2 * 61 && ev.motion.x < jucator2X - 2 * 61 + 44 && ev.motion.y > jucator2Y && ev.motion.y < jucator2Y + 44 && matriceJoc[jucator2.linie][jucator2.coloana - 3] != -1)
+						{
+							jucator2X -= 2 * 61;
+							gata = true;
+
+							matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+							jucator2.coloana -= 4;
+							matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+						}
+					}
+					else
+						if (jucator2X - 61 >= pozitieStart1X - (4 * 61) && VerificaPozitieAdversar(jucator2X - 61, jucator2Y, jucator1X, jucator1Y) == 1 && matriceJoc[jucator2.linie][jucator2.coloana - 1] != -1)
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X - 61 && ev.motion.x < jucator2X - 61 + 44 && ev.motion.y > jucator2Y && ev.motion.y < jucator2Y + 44)
+							{
+								jucator2X -= 61;
+								gata = true;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.coloana -= 2;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+							}
+
+
+
+					if (VerificaPozitieAdversar(jucator2X + 61, jucator2Y, jucator1X, jucator1Y) == 0 && jucator2X + 2 * 61 <= pozitieStart1X + (4 * 61) && matriceJoc[jucator2.linie][jucator2.coloana + 1] != -1)
+					{
+						if (matriceJoc[jucator2.linie][jucator2.coloana + 3] == -1)
+						{
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X + 61 && ev.motion.x < jucator2X + 61 + 44 && ev.motion.y > jucator2Y + 61 && ev.motion.y < jucator2Y + 44 + 61 && matriceJoc[jucator1.linie + 1][jucator1.coloana] != -1)
+							{
+								jucator2X += 61;
+								jucator2Y += 61;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.coloana += 2;
+								jucator2.linie += 2;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+								incepeJucator1 = true;
+								return 1;
+							}
+
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X + 61 && ev.motion.x < jucator2X + 61 + 44 && ev.motion.y > jucator2Y - 61 && ev.motion.y < jucator2Y + 44 - 61 && matriceJoc[jucator1.linie - 1][jucator1.coloana] != -1)
+							{
+
+								jucator2X += 61;
+								jucator2Y -= 61;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.coloana += 2;
+								jucator2.linie -= 2;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+								incepeJucator1 = true;
+								return 1;
+							}
+						}
+
+						if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X + 2 * 61 && ev.motion.x < jucator2X + 2 * 61 + 44 && ev.motion.y > jucator2Y && ev.motion.y < jucator2Y + 44 && matriceJoc[jucator2.linie][jucator2.coloana + 3] != -1)
+						{
+							jucator2X += 2 * 61;
+							gata = true;
+
+							matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+							jucator2.coloana += 4;
+							matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+						}
+					}
+					else
+						if (jucator2X + 61 <= pozitieStart1X + (4 * 61) && VerificaPozitieAdversar(jucator2X - 61, jucator2Y, jucator1X, jucator1Y) == 1 && matriceJoc[jucator2.linie][jucator2.coloana + 1] != -1)
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X + 61 && ev.motion.x < jucator2X + 61 + 44 && ev.motion.y > jucator2Y && ev.motion.y < jucator2Y + 44)
+							{
+								jucator2X += 61;
+								gata = true;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.coloana += 2;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+							}
+
+
+
+					if (jucator2Y + 61 <= pozitieStart1Y)
+					{
+						if (VerificaPozitieAdversar(jucator2X, jucator2Y + 61, jucator1X, jucator1Y) == 0 && jucator1.linie == 16 && matriceJoc[jucator2.linie + 1][jucator2.coloana] != -1)
+						{
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X - 61 && ev.motion.x < jucator2X - 61 + 44 && ev.motion.y > jucator2Y + 61 && ev.motion.y < jucator2Y + 44 + 61 && matriceJoc[jucator1.linie][jucator1.coloana - 1] != -1)
+							{
+								jucator2X -= 61;
+								jucator2Y += 61;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.coloana -= 2;
+								jucator2.linie += 2;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+								incepeJucator1 = true;
+								return 1;
+							}
+
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X + 61 && ev.motion.x < jucator2X + 61 + 44 && ev.motion.y > jucator2Y + 61 && ev.motion.y < jucator2Y + 44 + 61 && matriceJoc[jucator1.linie][jucator1.coloana + 1] != -1)
+							{
+
+								jucator2X += 61;
+								jucator2Y += 61;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.coloana += 2;
+								jucator2.linie += 2;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+								incepeJucator1 = true;
+								return 1;
+							}
+						}
+
+						if (VerificaPozitieAdversar(jucator2X, jucator2Y + 61, jucator1X, jucator1Y) == 0 && jucator2Y + 2 * 61 <= pozitieStart1Y && matriceJoc[jucator2.linie + 1][jucator2.coloana] != -1)
+						{
+							if (matriceJoc[jucator2.linie + 3][jucator2.coloana] == -1)
+							{
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X - 61 && ev.motion.x < jucator2X - 61 + 44 && ev.motion.y > jucator2Y + 61 && ev.motion.y < jucator2Y + 44 + 61 && matriceJoc[jucator1.linie][jucator1.coloana - 1] != -1)
+								{
+									jucator2X -= 61;
+									jucator2Y += 61;
+
+									matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+									jucator2.coloana -= 2;
+									jucator2.linie += 2;
+									matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+									incepeJucator1 = true;
+									return 1;
+								}
+
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X + 61 && ev.motion.x < jucator2X + 61 + 44 && ev.motion.y > jucator2Y + 61 && ev.motion.y < jucator2Y + 44 + 61 && matriceJoc[jucator1.linie][jucator1.coloana + 1] != -1)
+								{
+									jucator2X += 61;
+									jucator2Y += 61;
+
+									matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+									jucator2.coloana += 2;
+									jucator2.linie += 2;
+									matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+									incepeJucator1 = true;
+									return 1;
+								}
+							}
+
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X && ev.motion.x < jucator2X + 44 && ev.motion.y > jucator2Y + 2 * 61 && ev.motion.y < jucator2Y + 2 * 61 + 44 && matriceJoc[jucator2.linie + 3][jucator2.coloana] != -1)
+							{
+								jucator2Y += 2 * 61;
+								gata = true;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.linie += 4;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+							}
+						}
+						else
+							if (VerificaPozitieAdversar(jucator2X, jucator2Y + 61, jucator1X, jucator1Y) == 1 && matriceJoc[jucator2.linie + 1][jucator2.coloana] != -1)
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X && ev.motion.x < jucator2X + 44 && ev.motion.y > jucator2Y + 61 && ev.motion.y < jucator2Y + 61 + 44)
+								{
+									jucator2Y += 61;
+									gata = true;
+
+									matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+									jucator2.linie += 2;
+									matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+								}
+					}
+
+
+					if (jucator2Y - 61 >= pozitieStart2Y)
+						if (VerificaPozitieAdversar(jucator2X, jucator2Y - 61, jucator1X, jucator1Y) == 0 && jucator2Y - 2 * 61 >= pozitieStart2Y && matriceJoc[jucator2.linie - 1][jucator2.coloana] != -1)
+						{
+							if (matriceJoc[jucator2.linie - 3][jucator2.coloana] == -1)
+							{
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X - 61 && ev.motion.x < jucator2X - 61 + 44 && ev.motion.y > jucator2Y - 61 && ev.motion.y < jucator2Y + 44 - 61 && matriceJoc[jucator1.linie][jucator1.coloana - 1] != -1)
+								{
+									jucator2X -= 61;
+									jucator2Y -= 61;
+
+									matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+									jucator2.coloana -= 2;
+									jucator2.linie -= 2;
+									matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+									incepeJucator1 = true;
+									return 1;
+								}
+
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X + 61 && ev.motion.x < jucator2X + 61 + 44 && ev.motion.y > jucator2Y - 61 && ev.motion.y < jucator2Y + 44 - 61 && matriceJoc[jucator1.linie][jucator1.coloana + 1] != -1)
+								{
+									jucator2X += 61;
+									jucator2Y -= 61;
+
+									matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+									jucator2.coloana += 2;
+									jucator2.linie -= 2;
+									matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+
+									incepeJucator1 = true;
+									return 1;
+								}
+							}
+
+							if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X && ev.motion.x < jucator2X + 44 && ev.motion.y > jucator2Y - 2 * 61 && ev.motion.y < jucator2Y - 2 * 61 + 44 && matriceJoc[jucator2.linie - 3][jucator2.coloana] != -1)
+							{
+								jucator2Y -= 2 * 61;
+								gata = true;
+
+								matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+								jucator2.linie -= 4;
+								matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+							}
+						}
+						else
+							if (VerificaPozitieAdversar(jucator2X, jucator2Y - 61, jucator1X, jucator1Y) == 1 && matriceJoc[jucator2.linie - 1][jucator2.coloana] != -1)
+								if (ev.type == SDL_MOUSEBUTTONDOWN && ev.motion.x > jucator2X && ev.motion.x < jucator2X + 44 && ev.motion.y > jucator2Y - 61 && ev.motion.y < jucator2Y - 61 + 44)
+								{
+									jucator2Y -= 61;
+									gata = true;
+
+									matriceJoc[jucator2.linie][jucator2.coloana] = 0;
+									jucator2.linie -= 2;
+									matriceJoc[jucator2.linie][jucator2.coloana] = 2;
+								}
+				}
+			}
+		}
+		incepeJucator1 = true;
+	}
+}
+
 void StartJoc()
 {
 	SDL_RenderClear(_renderer);
