@@ -4,6 +4,20 @@
 #include<iostream>
 using namespace std;
 
+struct pion {
+	int linie;
+	int coloana;
+};
+struct perete {
+	int x;
+	int y;
+	bool fixat;
+};
+
+struct pozitie {
+	int linie;
+	int coloana;
+};
 struct patratTablaJoc {
 	int x;
 	int y;
