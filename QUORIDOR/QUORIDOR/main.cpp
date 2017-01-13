@@ -14,6 +14,8 @@ unsigned int jucator2X = 481;
 unsigned int jucator1Y = 573;
 unsigned int jucator2Y = 78;
 
+SDL_Renderer *_renderer;
+
 struct pion {
 	int linie;
 	int coloana;
@@ -136,8 +138,7 @@ bool VerificaDepasireMatrice(int x, int y)
 		return false;
 	if (x >16)
 		return false;
-	if (y < 0)
-		return false;
+	if (y < 0)		return false;
 	if (y>16)
 		return false;
 	return true;
@@ -158,7 +159,7 @@ bool MousePereteOrizontal(SDL_Event event, int x, int y)
 }
 
 
-void IncarcaImagine(const char *filePath, SDL_Renderer *_renderer, int x, int y, int w, int h)
+void IncarcaImagine(const char *filePath, int x, int y, int w, int h)
 {
 	SDL_Surface *_suprafata = nullptr;
 	SDL_Texture *_textura = nullptr;
@@ -203,20 +204,19 @@ void InitializareTablaJoc()
 	}
 }
 
-void StartJoc(SDL_Renderer *_renderer)
+void StartJoc()
 {
 	SDL_RenderClear(_renderer);
-	IncarcaImagine("./imagini/tablaJoc.jpg", _renderer, 0, 0, 1000, 700);
-	IncarcaImagine("./imagini/jucatorUnu.png", _renderer, 481, 573, 44, 44);
-	IncarcaImagine("./imagini/jucatorDoi.png", _renderer, 481, 78, 44, 44);
+	IncarcaImagine("./imagini/tablaJoc.jpg", 0, 0, 1000, 700);
+	IncarcaImagine("./imagini/jucatorUnu.png", 481, 573, 44, 44);
+	IncarcaImagine("./imagini/jucatorDoi.png", 481, 78, 44, 44);
 	while (true)
 	{
 		SDL_RenderPresent(_renderer);
 	}
 }
 
-
-int StartMeniu(SDL_Renderer *_renderer)
+int StartMeniu()
 {
 	SDL_Event ev;
 	bool mergeProgramul = true;
@@ -224,8 +224,7 @@ int StartMeniu(SDL_Renderer *_renderer)
 	while (mergeProgramul)
 	{
 		while (SDL_PollEvent(&ev))
-		{
-			IncarcaImagine("./imagini/meniuPrincipal.jpg", _renderer, 0, 0, 1000, 700);
+		{			IncarcaImagine("./imagini/meniuPrincipal.jpg", 0, 0, 1000, 700);
 
 			if (ev.type == SDL_QUIT || (ev.type == SDL_MOUSEBUTTONDOWN && (ev.motion.x > 315 && ev.motion.x < 665 && ev.motion.y > 470 && ev.motion.y < 570)))
 			{
@@ -234,25 +233,24 @@ int StartMeniu(SDL_Renderer *_renderer)
 			}
 
 			if (!(ev.motion.x > 315 && ev.motion.x < 665 && ev.motion.y > 220 && ev.motion.y < 320))
-				IncarcaImagine("./imagini/start.jpg", _renderer, 315, 220, 350, 100);
+				IncarcaImagine("./imagini/start.jpg", 315, 220, 350, 100);
 			else
-				IncarcaImagine("./imagini/starthover.jpg", _renderer, 315, 220, 350, 100);
+				IncarcaImagine("./imagini/starthover.jpg", 315, 220, 350, 100);
 
 			if (!(ev.motion.x > 315 && ev.motion.x < 665 && ev.motion.y > 345 && ev.motion.y < 445))
-				IncarcaImagine("./imagini/help.jpg", _renderer, 315, 345, 350, 100);
+				IncarcaImagine("./imagini/help.jpg", 315, 345, 350, 100);
 			else
-				IncarcaImagine("./imagini/helpHover.jpg", _renderer, 315, 345, 350, 100);
+				IncarcaImagine("./imagini/helpHover.jpg", 315, 345, 350, 100);
 
 			if (!(ev.motion.x > 315 && ev.motion.x < 665 && ev.motion.y > 470 && ev.motion.y < 570))
-				IncarcaImagine("./imagini/exit.jpg", _renderer, 315, 470, 350, 100);
+				IncarcaImagine("./imagini/exit.jpg", 315, 470, 350, 100);
 			else
-				IncarcaImagine("./imagini/exitHover.jpg", _renderer, 315, 470, 350, 100);
+				IncarcaImagine("./imagini/exitHover.jpg", 315, 470, 350, 100);
 
 			if (ev.type == SDL_MOUSEBUTTONDOWN)
 			{
 				if (ev.motion.x > 315 && ev.motion.x < 665 && ev.motion.y > 220 && ev.motion.y < 320)
 					return 1;
-
 				if (ev.motion.x > 315 && ev.motion.x < 665 && ev.motion.y > 345 && ev.motion.y < 445)
 				{
 					bool merge = true;
@@ -263,27 +261,27 @@ int StartMeniu(SDL_Renderer *_renderer)
 						{
 							SDL_RenderClear(_renderer);
 
-							if (nrPagina == 1) IncarcaImagine("./imagini/instructiuni1.jpg", _renderer, 0, 0, 1000, 700);
-							if (nrPagina == 2) IncarcaImagine("./imagini/instructiuni2.jpg", _renderer, 0, 0, 1000, 700);
-							if (nrPagina == 3) IncarcaImagine("./imagini/instructiuni3.jpg", _renderer, 0, 0, 1000, 700);
-							if (nrPagina == 4) IncarcaImagine("./imagini/instructiuni4.jpg", _renderer, 0, 0, 1000, 700);
+							if (nrPagina == 1) IncarcaImagine("./imagini/instructiuni1.jpg", 0, 0, 1000, 700);
+							if (nrPagina == 2) IncarcaImagine("./imagini/instructiuni2.jpg", 0, 0, 1000, 700);
+							if (nrPagina == 3) IncarcaImagine("./imagini/instructiuni3.jpg", 0, 0, 1000, 700);
+							if (nrPagina == 4) IncarcaImagine("./imagini/instructiuni4.jpg", 0, 0, 1000, 700);
 
 							if (nrPagina != 1)
 								if (!(ev.motion.x >= 855 && ev.motion.x <= 905 && ev.motion.y >= 45 && ev.motion.y <= 95))
-									IncarcaImagine("./imagini/butonStanga.jpg", _renderer, 855, 45, 50, 50);
+									IncarcaImagine("./imagini/butonStanga.jpg", 855, 45, 50, 50);
 								else
-									IncarcaImagine("./imagini/butonStangaHover.jpg", _renderer, 855, 45, 50, 50);
+									IncarcaImagine("./imagini/butonStangaHover.jpg", 855, 45, 50, 50);
 
 							if (nrPagina != 4)
 								if (!(ev.motion.x >= 915 && ev.motion.x <= 965 && ev.motion.y >= 45 && ev.motion.y <= 95))
-									IncarcaImagine("./imagini/butonDreapta.jpg", _renderer, 915, 45, 50, 50);
+									IncarcaImagine("./imagini/butonDreapta.jpg", 915, 45, 50, 50);
 								else
-									IncarcaImagine("./imagini/butonDreaptaHover.jpg", _renderer, 915, 45, 50, 50);
+									IncarcaImagine("./imagini/butonDreaptaHover.jpg", 915, 45, 50, 50);
 
 							if (!(ev.motion.x > 30 && ev.motion.x < 105 && ev.motion.y > 45 && ev.motion.y < 95))
-								IncarcaImagine("./imagini/back.jpg", _renderer, 30, 45, 175, 50);
+								IncarcaImagine("./imagini/back.jpg", 30, 45, 175, 50);
 							else
-								IncarcaImagine("./imagini/backHover.jpg", _renderer, 30, 45, 175, 50);
+								IncarcaImagine("./imagini/backHover.jpg", 30, 45, 175, 50);
 
 							if (ev.type == SDL_QUIT)
 							{
@@ -322,17 +320,16 @@ int main(int argc, char* argv[])
 	TTF_Init();
 	
 	SDL_Window *_window = nullptr;
-	SDL_Renderer *_renderer = nullptr;
+	_renderer = nullptr;
 
 	_window = SDL_CreateWindow("Quoridor", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1000, 700, NULL);
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	
-	int valoare = 0
-		;
-	valoare = StartMeniu(_renderer);
+	int valoare = 0;
+	valoare = StartMeniu();
 
 	if (valoare == 1)
-		StartJoc(_renderer);
+		StartJoc();
 
 	SDL_DestroyRenderer(_renderer);
 	SDL_DestroyWindow(_window);
