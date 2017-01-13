@@ -27,6 +27,7 @@ struct patratTablaJoc {
 
 patratTablaJoc matricePatrate[9][9];
 pion jucator1, jucator2;
+perete matricePerete[16][8];
 short matriceJoc[17][17];
 short matriceAux[17][17];
 
@@ -52,18 +53,101 @@ void MatriceAuxiliara(int x, int y, int pozitie)
 
 }
 
+bool LiberPereteVertical(int linie, int coloana)
+{
+	if (matricePerete[linie][coloana].fixat == true)
+		return false;
+
+	if (linie >= 2 && matricePerete[linie - 2][coloana].fixat == true)
+		return false;
+
+	if (linie <= 12 && matricePerete[linie + 2][coloana].fixat == true)
+		return false;
+
+	if (matricePerete[linie + 1][coloana].fixat == true)
+		return false;
+
+	return true;
+}
+
+bool LiberPereteOrizontal(int linie, int coloana)
+{
+	if (matricePerete[linie][coloana].fixat == true)
+		return false;
+
+	if (coloana >= 1 && matricePerete[linie][coloana - 1].fixat == true)
+		return false;
+
+	if (coloana <= 6 && matricePerete[linie][coloana + 1].fixat == true)
+		return false;
+
+	if (matricePerete[linie - 1][coloana].fixat == true)
+		return false;
+
+	return true;
+}
+
+bool EstePereteVerticalLiber(int x, int y)
+{
+	bool drumJucator1, drumJucator2;
+	matriceAuxiliara(x, y, 1);
+	drumJucator1 = ExistaDrum(1);
+	matriceAuxiliara(x, y, 1);
+	drumJucator2 = ExistaDrum(2);
+
+	if (drumJucator1 == true && drumJucator2 == true)
+		return true;
+	return false;
+}
+
+bool EstePereteOrizontalLiber(int x, int y)
+{
+	bool drumJucator1, drumJucator2;
+	matriceAuxiliara(x, y, 2);
+	drumJucator1 = ExistaDrrum(1);
+	matriceAuxiliara(x, y, 2);
+	drumJucator2 = ExistaDrum(2);
+
+	if (drumJucator1 == true && drumJucator2 == true)
+		return true;
+	return false;
+}
+
+int VerificaPozitieAdversar(int xUrm, int yUrm, int xAdversar, int yAdversar)
+{
+	if (xUrm == xAdversar && yUrm == yAdversar)
+		return 0;
+	return 1;
+}
+
+bool VerificaDepasireMatrice(int x, int y)
+{
+	if (x < 0)
+		return false;
+	if (x >16)
+		return false;
+	if (y < 0)
+		return false;
+	if (y>16)
+		return false;
+	return true;
+}
+
 bool MousePereteVertical(SDL_Event event, int x, int y)
 {
 	if (event.motion.x >= x && event.motion.x <= x + 18 && event.motion.y >= y && event.motion.y <= y + 43)
 		return true;
 	return false;
 }
+
 bool MousePereteOrizontal(SDL_Event event, int x, int y)
 {
 	if (event.motion.x >= x && event.motion.x <= x + 40 && event.motion.y >= y && event.motion.y <= y + 15)
 		return true;
 	return false;
 }
+
+
 void IncarcaImagine(const char *filePath, SDL_Renderer *_renderer, int x, int y, int w, int h)
 {
 	SDL_Surface *_suprafata = nullptr;
